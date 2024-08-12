@@ -14,4 +14,20 @@ export const typeDefs = gql`
   type Subscription {
     trackAdded: Track
   }
+
+  type Subscription {
+    paceChanged: Int
+    accelerometerData: AccelerometerData
+  }
+
+  type AccelerometerData {
+    x: Int
+    y: Int
+    z: Int
+    speed: Int
+  }
+
+  type Mutation {
+    sendAccelerometerData(x: Int!, y: Int!, z: Int!, speed: Int): Track  
+  }
 `;

@@ -1,4 +1,7 @@
+import { PubSub } from "graphql-subscriptions";
+import { calculateBPM, selectTrack } from "./core";
 
+const pubsub = new PubSub()
 
 interface Track {
   name: string;
@@ -15,10 +18,23 @@ export const resolvers = {
     },
   },
   Subscription: {
-    trackAdded: {
-      subscribe: async (_, __, { pubsub }) => pubsub.asyncIterator('TRACK_ADDED'),
-    },
+    // trackAdded: {
+    //   subscribe: async (_, __, { pubsub }) => pubsub.asyncIterator('TRACK_ADDED'),
+    // },
+    // paceChanged: {
+    //   subscribe: async (_, __, { pubsub }) => pubsub.asyncIterator('PACE_CHANGED'),
+    // },
+    accelerometerData: {
+      subscribe: async (_, __, { pubsub }) => pubsub.asyncIterator('ACCELEROMETER_DATA')
+    }
   },
+  Mutation: {
+    sendAccelerometerData: (_, { input }) => {
+      const bpm = calculateBPM(input)
+      const nextSong = selectTrack('1', bpm)
+      pubsub.publish('ACCELEROMETER_DATA', { accelerometerData: input })
+    }
+  }
 };
 
 // export const addTrack = (track: Track) => {
