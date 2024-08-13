@@ -2,7 +2,7 @@ import { gql } from 'apollo-server-express';
 
 export const typeDefs = gql`
   type Track {
-    name: String
+    title: String
     artist: String
     bpm: Int
   }
@@ -12,22 +12,17 @@ export const typeDefs = gql`
   }
 
   type Subscription {
-    trackAdded: Track
-  }
-
-  type Subscription {
-    paceChanged: Int
-    accelerometerData: AccelerometerData
+    nowPlaying: Track
   }
 
   type AccelerometerData {
-    x: Int
-    y: Int
-    z: Int
-    speed: Int
+    x: Float
+    y: Float
+    z: Float
+    speed: Float
   }
 
   type Mutation {
-    sendAccelerometerData(x: Int!, y: Int!, z: Int!, speed: Int): Track  
+    sendAccelerometerData(x: Float!, y: Float!, z: Float!, speed: Float): Track
   }
 `;
